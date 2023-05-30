@@ -8,6 +8,7 @@ host = '192.168.100.57'
 port = 9090
 ThreadCount = 0
 
+#zodat server naar andere afdelingen kan sturen
 global KlantIp
 global PlanningIP
 global AccountmanagerIP
@@ -18,9 +19,10 @@ try:
     ServerSideSocket.bind((host, port))
 except socket.error as e:
     print(str(e))
-print('Socket is listening..')
+print('Server is gestart..')
 ServerSideSocket.listen(5)
 
+#iedere verbonde afdeling creert een nieuwe van deze
 def multi_threaded_client(connection):
     connection.send(str.encode('Ontvangen'))
     while True:
@@ -48,7 +50,7 @@ def multi_threaded_client(connection):
 
 
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        #volgende elifs zijn om data naar destination te sturen
+        # volgende elifs zijn om data naar destination te sturen
         if data["destClient"] == "Accountmanager":
             sock.connect(AccountmanagerIP, 9090)
             sock.sendall(bytes(data, encoding="utf-8"))
@@ -71,7 +73,7 @@ def multi_threaded_client(connection):
         connection.sendall(str.encode("Idk"))
     connection.close()
 
-
+#accepteert nieuwe verbindingen
 while True:
     Client, address = ServerSideSocket.accept()
     print('Volgend IP adres is nu verbonden: ' + address[0] + ', address is: ' + str(address[1]))
