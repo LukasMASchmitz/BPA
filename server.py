@@ -11,6 +11,8 @@ ThreadCount = 0
 global KlantIp
 global PlanningIP
 global AccountmanagerIP
+global ProductieIP
+global VoorraadIP
 
 try:
     ServerSideSocket.bind((host, port))
@@ -37,20 +39,36 @@ def multi_threaded_client(connection):
         elif data["client"] == "Accountmanager":
             AccountmanagerIP = data["MijnIP"]
             print("PlanningIP is: " + AccountmanagerIP)
+        elif data["client"] == "Productie":
+            ProductieIP = data["MijnIP"]
+            print("ProductieIP is: " + ProductieIP)
+        elif data["client"] == "Voorraad":
+            VoorraadIP = data["MijnIP"]
+            print("VoorraadIP is: " + VoorraadIP)
+
 
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         #volgende elifs zijn om data naar destination te sturen
         if data["destClient"] == "Accountmanager":
-            sock.connect((data["MijnIP"], 9090))
+            sock.connect(AccountmanagerIP, 9090)
             sock.sendall(bytes(data, encoding="utf-8"))
-        #elif data[1] == "Planning":
+        elif data["destClient"] == "Klant":
+            sock.connect(KlantIP, 9090)
+            sock.sendall(bytes(data, encoding="utf-8"))
+        elif data["destClient"] == "Planning":
+            sock.connect(PlanningIP, 9090)
+            sock.sendall(bytes(data, encoding="utf-8"))
+        elif data["destClient"] == "Voorraad":
+            sock.connect(VoorraadIP, 9090)
+            sock.sendall(bytes(data, encoding="utf-8"))
+        elif data["destClient"] == "Productie":
+            sock.connect(ProductieIP, 9090)
+            sock.sendall(bytes(data, encoding="utf-8"))
 
 
 
 
-
-
-        connection.sendall(str.encode("Het werkt"))
+        connection.sendall(str.encode("Idk"))
     connection.close()
 
 

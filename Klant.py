@@ -2,6 +2,7 @@ import socket
 import sys
 import json
 
+#zet hier het ip adres van de server
 HOST, PORT = '192.168.100.57' , 9090
 
 running = True
