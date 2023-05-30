@@ -4,26 +4,66 @@ import json
 
 HOST, PORT = '192.168.100.57', 9090
 
+running = True
 
-klantorder = {"client": "Klant" , "name": (input("naam?"))}
+while running:
+    naam = ''
+    periode = 0
+    ingevuld = False
 
-data = json.dumps(klantorder)
-print(data)
-# Create a socket (SOCK_STREAM means a TCP socket)
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    while naam == '':
+        naam = input("naam: ")
+        print("er is geen naam ingevuld")
+    
+    while not ingevuld:
+        blockType = input("blocktype, kies er 1. (A/B/C): ")
+        if blockType != "":
+            blockType = blockType.upper()
+            if blockType == 'A' or blockType == 'B' or blockType == 'C':
+                ingevuld = True
+            else:
+                print("er ging iets fout, probeer het opnieuw.")
 
-try:
-    # Connect to server and send data
-    sock.connect((HOST, PORT))
-    sock.sendall(bytes(data,encoding="utf-8"))
+    ingevuld = False
+
+    while not ingevuld:
+        aantal = input("aantal: ")
+        if aantal.isdigit():
+            aantal = int(aantal)
+            if aantal<1:
+                print("Je moet minstens 1 artikel bestellen.")
+            elif aantal<3:
+                print("Je mag per bestelling maximaal 3 artikelen bestellen.")
+            else:
+                ingevuld = True
+    
+    while periode < 1:
+        periode = input("periode: ")
+        if periode.isdigit():
+            periode = int(periode)
 
 
-    # kan weg
-    received = sock.recv(1024)
-    received = received.decode("utf-8")
 
-finally:
-    sock.close()
+    klantorder = {"client": "Klant" , "destClient": "Accountmanager" , "MijnIP": HOST , "name": naam , "blockType": blockType , "aantal": aantal , "periode": periode}
 
-print( "Sent:     {}".format(klantorder))
-print ("Received: {}".format(received))
+    data = json.dumps(klantorder)
+    print(data)
+    # Create a socket (SOCK_STREAM means a TCP socket)
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    try:
+        # Connect to server and send data
+        sock.connect((HOST, PORT))
+        sock.sendall(bytes(data,encoding="utf-8"))
+
+
+        # kan weg
+        received = sock.recv(1024)
+        received = received.decode("utf-8")
+
+    finally:
+        sock.close()
+
+    print( "Sent:     {}".format(klantorder))
+    print ("Received: {}".format(received))
+
