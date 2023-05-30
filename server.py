@@ -1,19 +1,30 @@
 import socket
+import os
+from _thread import *
 
-
-#HOST = "192.168.100.57"
-
-PORT = 9090
-HOST = socket.gethostname(socket.gethostname())
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind((HOST, PORT))
-
-server.listen(5)
+ServerSideSocket = socket.socket()
+host = '192.168.100.57'
+port = 9090
+ThreadCount = 0
+try:
+    ServerSideSocket.bind((host, port))
+except socket.error as e:
+    print(str(e))
+print('Socket is listening..')
+ServerSideSocket.listen(5)
+def multi_threaded_client(connection):
+    connection.send(str.encode('Server is working:'))
+    while True:
+        data = connection.recv(1024)
+        response = 'Server message: ' + data.decode('utf-8')
+        if not data:
+            break
+        connection.sendall(str.encode(response))
+    connection.close()
 while True:
-    communication_socket, address = server.accept()
-    print(f"connected to {address}")
-    message = communication_socket.recv(1024).decode('utf-8')
-    print(f"message from client is: {message}")
-    communication_socket.send(f"got message".encode('utf-8'))
-    communication_socket.close()
-    print(f"connection met {address} end")
+    Client, address = ServerSideSocket.accept()
+    print('Connected to: ' + address[0] + ':' + str(address[1]))
+    start_new_thread(multi_threaded_client, (Client, ))
+    ThreadCount += 1
+    print('Thread Number: ' + str(ThreadCount))
+ServerSideSocket.close()
