@@ -4,7 +4,7 @@ from _thread import *
 import json
 
 ServerSideSocket = socket.socket()
-host = '192.168.100.57'
+host = '192.168.1.140'
 port = 9090
 ThreadCount = 0
 

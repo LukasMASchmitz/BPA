@@ -3,7 +3,7 @@ import sys
 import json
 
 #zet hier het ip adres van de server
-HOST, PORT = '192.168.100.57' , 9090
+HOST, PORT = '192.168.1.140' , 9090
 
 running = True
 
@@ -15,7 +15,6 @@ while running:
 
     while naam == '':
         naam = input("naam: ")
-        print("er is geen naam ingevuld")
     
     while not ingevuld:
         blockType = input("blocktype, kies er 1. (A/B/C): ")
@@ -34,7 +33,7 @@ while running:
             aantal = int(aantal)
             if aantal<1:
                 print("Je moet minstens 1 artikel bestellen.")
-            elif aantal<3:
+            elif aantal>3:
                 print("Je mag per bestelling maximaal 3 artikelen bestellen.")
             else:
                 ingevuld = True
