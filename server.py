@@ -38,9 +38,11 @@ def multi_threaded_client(connection):
             AccountmanagerIP = data["MijnIP"]
             print("PlanningIP is: " + AccountmanagerIP)
 
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         #volgende elifs zijn om data naar destination te sturen
-        #if data[1] == "Accountmanager":
-
+        if data["destClient"] == "Accountmanager":
+            sock.connect((data["MijnIP"], 9090))
+            sock.sendall(bytes(data, encoding="utf-8"))
         #elif data[1] == "Planning":
 
 
