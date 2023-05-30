@@ -5,10 +5,9 @@ import json
 HOST, PORT = '192.168.100.57', 9090
 
 
-klantorder = {"id": (str(input("wat is ID?"))), "name": (input("naam?"))}
+klantorder = {"id": (int(input("wat is ID?"))), "name": (input("naam?"))}
 
-
-
+data = json.dumps(klantorder)
 
 # Create a socket (SOCK_STREAM means a TCP socket)
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -16,7 +15,7 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 try:
     # Connect to server and send data
     sock.connect((HOST, PORT))
-    sock.sendall(bytes(klantorder,encoding="utf-8"))
+    sock.sendall(bytes(data,encoding="utf-8"))
 
 
     # kan weg
