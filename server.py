@@ -20,7 +20,7 @@ def multi_threaded_client(connection):
         data = connection.recv(1024)
         response = 'Server message: ' + data.decode('utf-8')
         print(data)
-        #if data[1] == "Accountmanager":
+        #if data[0] == "Klant":
 
 
 

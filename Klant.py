@@ -5,10 +5,10 @@ import json
 HOST, PORT = '192.168.100.57', 9090
 
 
-klantorder = {"id": (int(input("wat is ID?"))), "name": (input("naam?"))}
+klantorder = {"client": "Klant" , "name": (input("naam?"))}
 
 data = json.dumps(klantorder)
-
+print(data)
 # Create a socket (SOCK_STREAM means a TCP socket)
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
