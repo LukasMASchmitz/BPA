@@ -4,8 +4,46 @@ import json
 
 HOST, PORT = '192.168.100.57' , 9090
 
-while True:
-    klantorder = {"client": "Klant", "destClient": "Accountmanager", "MijnIP": HOST, "name": (input("naam?"))}
+running = True
+
+while running:
+
+    naam = ''
+    periode = 0
+    ingevuld = False
+
+    while naam == '':
+        naam = input("naam: ")
+        print("er is geen naam ingevuld")
+    
+    while not ingevuld:
+        blockType = input("blocktype, kies er 1. (A/B/C): ")
+        if blockType != "":
+            blockType = blockType.upper()
+            if blockType == 'A' or blockType == 'B' or blockType == 'C':
+                ingevuld = True
+            else:
+                print("er ging iets fout, probeer het opnieuw.")
+
+    ingevuld = False
+
+    while not ingevuld:
+        aantal = input("aantal: ")
+        if aantal.isdigit():
+            aantal = int(aantal)
+            if aantal<1:
+                print("Je moet minstens 1 artikel bestellen.")
+            elif aantal<3:
+                print("Je mag per bestelling maximaal 3 artikelen bestellen.")
+            else:
+                ingevuld = True
+    
+    while periode < 1:
+        periode = input("periode: ")
+        if periode.isdigit():
+            periode = int(periode)
+
+    klantorder = {"client": "Klant" , "destClient": "Accountmanager" , "MijnIP": HOST , "name": naam , "blockType": blockType , "aantal": aantal , "periode": periode}
 
     data = json.dumps(klantorder)
     print(data)
