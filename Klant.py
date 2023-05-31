@@ -3,7 +3,7 @@ import sys
 import json
 
 #zet hier het ip adres van de server
-HOST, PORT = '192.168.1.140' , 9090
+HOST, PORT = '10.64.2.158' , 9090
 
 running = True
 

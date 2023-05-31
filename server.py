@@ -4,7 +4,7 @@ from _thread import *
 import json
 
 ServerSideSocket = socket.socket()
-host = '192.168.100.51'
+host = '10.64.2.158'
 port = 9090
 ThreadCount = 0
 
@@ -17,9 +17,10 @@ global VoorraadIP
 
 try:
     ServerSideSocket.bind((host, port))
+    print('Server is gestart...')
 except socket.error as e:
     print(str(e))
-print('Server is gestart...')
+
 ServerSideSocket.listen(5)
 
 #iedere verbonde afdeling creert een nieuwe van deze
@@ -50,26 +51,28 @@ def multi_threaded_client(connection):
         else:
             print("error 1")
 
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        # volgende elifs zijn om data naar destination te sturen
-        if data["destClient"] == "Accountmanager":
-            sock.connect(AccountmanagerIP, 9090)
-            sock.sendall(bytes(data, encoding="utf-8"))
-        elif data["destClient"] == "Klant":
-            sock.connect(KlantIP, 9090)
-            sock.sendall(bytes(data, encoding="utf-8"))
-        elif data["destClient"] == "Planning":
-            sock.connect(PlanningIP, 9090)
-            sock.sendall(bytes(data, encoding="utf-8"))
-        elif data["destClient"] == "Voorraad":
-            sock.connect(VoorraadIP, 9090)
-            sock.sendall(bytes(data, encoding="utf-8"))
-        elif data["destClient"] == "Productie":
-            sock.connect(ProductieIP, 9090)
-            sock.sendall(bytes(data, encoding="utf-8"))
-        else:
-            print("error 2: verkeerde input opgegeven")
-
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            # volgende elifs zijn om data naar destination te sturen
+            if data["destClient"] == "Accountmanager":
+                sock.connect(AccountmanagerIP, 9090)
+                sock.sendall(bytes(data, encoding="utf-8"))
+            elif data["destClient"] == "Klant":
+                sock.connect(KlantIP, 9090)
+                sock.sendall(bytes(data, encoding="utf-8"))
+            elif data["destClient"] == "Planning":
+                sock.connect(PlanningIP, 9090)
+                sock.sendall(bytes(data, encoding="utf-8"))
+            elif data["destClient"] == "Voorraad":
+                sock.connect(VoorraadIP, 9090)
+                sock.sendall(bytes(data, encoding="utf-8"))
+            elif data["destClient"] == "Productie":
+                sock.connect(ProductieIP, 9090)
+                sock.sendall(bytes(data, encoding="utf-8"))
+            else:
+                print("error 2: verkeerde input opgegeven")
+        except:
+            print("Een destination is nog niet bekend")
 
 
         connection.sendall(str.encode("Idk"))
