@@ -4,7 +4,7 @@ from _thread import *
 import json
 
 ServerSideSocket = socket.socket()
-host = '192.168.1.140'
+host = '192.168.100.51'
 port = 9090
 ThreadCount = 0
 
@@ -19,7 +19,7 @@ try:
     ServerSideSocket.bind((host, port))
 except socket.error as e:
     print(str(e))
-print('Server is gestart..')
+print('Server is gestart...')
 ServerSideSocket.listen(5)
 
 #iedere verbonde afdeling creert een nieuwe van deze
@@ -47,7 +47,8 @@ def multi_threaded_client(connection):
         elif data["client"] == "Voorraad":
             VoorraadIP = data["MijnIP"]
             print("VoorraadIP is: " + VoorraadIP)
-
+        else:
+            print("error 1")
 
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # volgende elifs zijn om data naar destination te sturen
@@ -66,7 +67,8 @@ def multi_threaded_client(connection):
         elif data["destClient"] == "Productie":
             sock.connect(ProductieIP, 9090)
             sock.sendall(bytes(data, encoding="utf-8"))
-
+        else:
+            print("error 2: verkeerde input opgegeven")
 
 
 
